@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; 
 public class PlayerController : MonoBehaviour
-{
+{ 
+
     public float speed = 5f;
     public float jumpForce = 7f;
     private Rigidbody2D rb;
@@ -11,6 +12,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
     }
 
     void Update()
@@ -52,10 +54,16 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Colisión detectada con: " + collision.gameObject.tag);
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = true;
-        if(collision.gameObject.CompareTag("EnemyFire"))
+        if(collision.gameObject.CompareTag("Enemy"))
             Die();
         if(collision.gameObject.CompareTag("Meta"))  
             Win();
+         if (collision.gameObject.CompareTag("Punto"))
+        {
+            Debug.Log("Ignorando colisión con: " + collision.gameObject.name);
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>(), true);
+            return; // Salir para no continuar con otras acciones de colisión
+        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
