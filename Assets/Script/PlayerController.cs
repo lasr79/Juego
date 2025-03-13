@@ -83,6 +83,11 @@ public class PlayerController : MonoBehaviour
 
             if (GameManager.instance.GetVidas() <= 0)
             {
+               GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+    
+               Destroy(gameManager.gameObject); // Destruye el GameManager antes de cambiar la escena
+    
+
                 SceneManager.LoadScene("GameOver");  // Reinicia la escena de Game Over
             }
             else
@@ -101,7 +106,11 @@ public class PlayerController : MonoBehaviour
     void Win()
     {
         Debug.Log("🏆 ¡Has ganado!");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+    
+               Destroy(gameManager.gameObject); // Destruye el GameManager antes de cambiar la escena
+               
+               SceneManager.LoadScene("Escenario3");
     }
 }
 
