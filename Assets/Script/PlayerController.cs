@@ -1,18 +1,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; 
+
 public class PlayerController : MonoBehaviour
 { 
-
     public float speed = 5f;
     public float jumpForce = 7f;
     private Rigidbody2D rb;
     private bool isGrounded;
-    private bool facingRight = true; // Asumo que empieza mirando a la derecha
+    private bool facingRight = true;
+
+    public Vector3 puntoInicial; // Punto donde reaparecerá el jugador
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
+        puntoInicial = transform.position; // Guarda la posición inicial del jugador
     }
 
     void Update()
@@ -33,37 +35,36 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
-        // Game over si cae demasiado
+
+        // 🔥 Si cae al vacío, perder vida y reaparecer
         if (transform.position.y < -10f)
         {
-            Debug.Log("Game Over");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Debug.Log("⛔ El jugador ha caído al vacío");
+            Die(); 
         } 
     }
 
     void Flip()
     {
-        facingRight = !facingRight; // Cambia la dirección
+        facingRight = !facingRight;
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
-        transform.localScale = theScale; // Aplica el volteo
+        transform.localScale = theScale;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Colisión detectada con: " + collision.gameObject.tag);
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = true;
-        if(collision.gameObject.CompareTag("Enemy"))
-            Die();
-        if(collision.gameObject.CompareTag("Meta"))  
-            Win();
-         if (collision.gameObject.CompareTag("Punto"))
+
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Ignorando colisión con: " + collision.gameObject.name);
-            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>(), true);
-            return; // Salir para no continuar con otras acciones de colisión
+            Debug.Log("🔥 ¡Colisión con enemigo detectada!");
+            Die();
         }
+
+        if (collision.gameObject.CompareTag("Meta"))  
+            Win();
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -71,12 +72,36 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = false;
     }
-     void Die(){
-    Debug.Log("El jugador se ha muerto");
-    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    void Die()
+    {
+        Debug.Log("💀 El jugador ha muerto");
+
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.PerderVida();  // 🔥 Primero restar la vida
+
+            if (GameManager.instance.GetVidas() <= 0)
+            {
+                SceneManager.LoadScene("GameOver");  // Reinicia la escena de Game Over
+            }
+            else
+            {
+                // 🔥 Reaparece en el punto inicial
+                transform.position = puntoInicial;
+                Debug.Log("🔄 Reapareciendo en el punto inicial");
+            }
+        }
+        else
+        {
+            Debug.LogError("❗ El GameManager no se encontró en la escena.");
+        }
     }
-     void Win(){
-    Debug.Log("Has ganado");
-    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    void Win()
+    {
+        Debug.Log("🏆 ¡Has ganado!");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-} 
+}
+
