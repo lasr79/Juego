@@ -64,7 +64,11 @@ public class PlayerController : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Meta"))  
-            Win();
+            Win1();
+        if (collision.gameObject.CompareTag("Meta2"))  
+            Win2();
+        if (collision.gameObject.CompareTag("MetaFinal"))  
+            WinF();
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -103,7 +107,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Win()
+    void Win1()
+    {
+        Debug.Log("🏆 ¡Has ganado!");
+        GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+    
+               Destroy(gameManager.gameObject); // Destruye el GameManager antes de cambiar la escena
+               
+               SceneManager.LoadScene("Escenario2");
+    }
+     void Win2()
     {
         Debug.Log("🏆 ¡Has ganado!");
         GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
@@ -111,6 +124,15 @@ public class PlayerController : MonoBehaviour
                Destroy(gameManager.gameObject); // Destruye el GameManager antes de cambiar la escena
                
                SceneManager.LoadScene("Escenario3");
+    }
+       void WinF()
+    {
+        Debug.Log("🏆 ¡Has ganado!");
+        GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+    
+               Destroy(gameManager.gameObject); // Destruye el GameManager antes de cambiar la escena
+               
+               SceneManager.LoadScene("Winner");
     }
 }
 

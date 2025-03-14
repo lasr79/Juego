@@ -9,6 +9,8 @@ TagManager:
   - Punto
   - Enemy
   - Meta
+  - MetaFinal
+  - Meta2
   layers:
   - Default
   - TransparentFX

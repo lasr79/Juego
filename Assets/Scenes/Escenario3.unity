@@ -8970,7 +8970,7 @@ GameObject:
   - component: {fileID: 2004632898}
   m_Layer: 0
   m_Name: TorreMagica_0
-  m_TagString: Meta
+  m_TagString: MetaFinal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
