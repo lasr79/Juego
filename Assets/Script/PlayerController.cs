@@ -64,11 +64,17 @@ public class PlayerController : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Meta"))  
+        {
             Win1();
+        }
         if (collision.gameObject.CompareTag("Meta2"))  
+        { 
             Win2();
+         }   
         if (collision.gameObject.CompareTag("MetaFinal"))  
+        {
             WinF();
+        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -114,7 +120,7 @@ public class PlayerController : MonoBehaviour
     
                Destroy(gameManager.gameObject); // Destruye el GameManager antes de cambiar la escena
                
-               SceneManager.LoadScene("Escenario2");
+               SceneManager.LoadScene("Escenario3");
     }
      void Win2()
     {
