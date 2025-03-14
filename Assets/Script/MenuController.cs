@@ -23,6 +23,11 @@ public class MenuController : MonoBehaviour
         Debug.Log("🚀 Cargando Escenario 3...");
         SceneManager.LoadScene("Escenario3");
     }
-
+    
+    public void CargarIntro()
+    {
+        Debug.Log("🚀 Cargando Escenario 3...");
+        SceneManager.LoadScene("Intro");
+    }
     
 }
